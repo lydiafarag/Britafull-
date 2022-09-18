@@ -6,7 +6,7 @@ import numpy as np
 
 #importing functions
 from notification import sendNotification
-from sound import sound
+from sound import refill_message
 from dataclean import reject_outliers, list_avg, get_weight
 
 pygame.mixer.init() #music <3
@@ -36,7 +36,9 @@ if __name__ == '__main__':
         try:
             #need to check if water was REFILLED
             if trigger_check and (temp_weight - prev_crit_weight) < -ALLOWED_DIFF: #water was removed
-                print("i just tattled on you!!")
+                print("just tattled")
+                #sendNotification()
+                trigger_check = False
             #no trigger check or water was refilled
             #brita is lifted (NOT HERE and PREVIOUSLY PRESENT)
             elif temp_weight <= NOTHING and pre_weight >= CONTAINER:
@@ -52,6 +54,7 @@ if __name__ == '__main__':
                 elif weight_diff < -ALLOWED_DIFF: #removed water
                     print("brita emptied, not refilled")
                     print("you have", WAIT_TIME, "seconds to refill brita")
+                    refill_message() #plays the audio
                     time.sleep(WAIT_TIME - 5)
                     #if they don't refill it, text message will be sent
                     trigger_check = True

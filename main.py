@@ -2,6 +2,7 @@
 import serial
 import pygame
 import time
+<<<<<<< HEAD
 import numpy as np
 
 #importing functions
@@ -28,10 +29,25 @@ ALLOWED_DIFF = 50 #amount of water allowed to be removed without retribution
 weight = [300, 300] #current, previous weight
 now_weight, pre_weight = weight #how much water in the brita, subject to change
 weight_diff = now_weight - pre_weight #pos = filled, neg=emptied
+=======
+from notification import sendNotification
+from sound import sound
+
+pygame.mixer.init()
+container = 50
+min_water = 150
+threshold = container + min_water
+wait_time = 10
+weight = 300
+count = 0
+alarm_sounded = False
+count_til_text = 0
+>>>>>>> d3927b2b0f2613f4651794c3df2ee14a7e47b6e5
 
 if __name__ == '__main__':
     ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
     ser.reset_input_buffer()
+<<<<<<< HEAD
 
     while True:
         #CHECKING INFORMATION
@@ -62,6 +78,40 @@ if __name__ == '__main__':
 
 
 
+=======
+    while True:
+        weight_str = ser.readline().decode('utf-8').rstrip()
+        if (weight_str != ''):
+            weight = int(weight_str)
+        
+        print(weight)
+
+        try:
+            time.sleep(1)
+
+            if weight > threshold:
+                count = 0
+                count_til_text = 0
+                alarm_sounded = false
+            
+            # empty britas
+            if (weight < threshold and weight > 5):
+                count += 1
+                if alarm_sounded:
+                    count_til_text += 1
+            
+            if count == 10:
+                sound()
+                count = 0
+                count_til_text += 1
+
+            if count_til_text == 10:
+                sendNotification()
+                count_til_text = 0
+        except ValueError:
+            pass
+        
+>>>>>>> d3927b2b0f2613f4651794c3df2ee14a7e47b6e5
 #high -> low = emptied
 #low -> high = filled
 #same = same

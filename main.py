@@ -7,7 +7,7 @@ import numpy as np
 #importing functions
 from notification import sendNotification
 from sound import sound
-from dataclean import reject_outliers, list_avg
+from dataclean import reject_outliers, list_avg, get_weight
 
 pygame.mixer.init() #music <3
 
@@ -17,8 +17,9 @@ count_til_text = 0 #??
 
 
 #default values - unit: analog values from 330ohm resistor w FSR (?)
-CONTAINER = 50
-MIN_WATER = 150
+NOTHING = 50
+CONTAINER = 100
+MIN_WATER = 200
 THRESHOLD = CONTAINER + MIN_WATER
 WAIT_TIME = 10 #seconds given to refill the brita
 ALLOWED_DIFF = 50 #amount of water allowed to be removed without retribution
@@ -33,9 +34,9 @@ if __name__ == '__main__':
     ser.reset_input_buffer()
 
     while True:
-
         #CHECKING INFORMATION
-        print(get_weight())
+        get_weight(ser)
+
     """
         try:
             #brita is lifted (NOT HERE and PREVIOUSLY PRESENT)
@@ -59,22 +60,7 @@ if __name__ == '__main__':
             pass
     """        
 
-def get_weight(weight_str): #takes 5 seconds to collect semiaccurate weight
-    weight_arr = np.array([]) #used to hold weight collected, has to be numpy array
-    new_weight = 0
-    start = time.time()
-    end = time.time()
-    while abs(end-start) < 5: #5 seconds to collect information
-        weight_str = ser.readline().decode('utf-8').rstrip()
-        #getting weight from arduino serial
-        if (weight_str != ''): #ensuring we don't break things :p
-            new_weight = int(weight_str)
-            np.append(weight_arr, new_weight)
-        end = time.time()
-    #clean the information
-    cleaned = reject_outliers(weight_arr)
-    acc_weight = list_avg(cleaned)
-    return acc_weight
+
 
 #high -> low = emptied
 #low -> high = filled

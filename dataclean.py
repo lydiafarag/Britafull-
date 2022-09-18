@@ -29,5 +29,5 @@ def get_weight(ser_ial): #takes 5 seconds to collect semiaccurate weight
     cleaned = reject_outliers(weight_arr)
     cleaned = cleaned.astype(int) #converting values to ints
     acc_weight = list_avg(cleaned)
-    print(acc_weight)
+    #print(acc_weight)
     return acc_weight

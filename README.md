@@ -4,7 +4,7 @@ Britafull is inspired by the ubiquitous student experience of living with people
 ##  What it does 🔔🚰
 Britafull detects when the Brita's water levels get below a certain point using weight. The next person to grab the Brita and empties it to that point has seconds before the speaker _kindly_ reminds them to be a good roommate and fill up that Brita. If that's not incentive enough, waiting even longer triggers a text message reminder. That's right, the whole group chat knows now. 
 
-Call it petty, but here at Britafull, we get results. 
+Call it petty, but here at Britafull, we get results.  
 
 ## How we built it 💻
 We used force sensing resistors to detect changes in force accounting for the presence or absence of the Brita. This information (analog) is passed to an Arduino which converts to a digital signal that is sent to our Raspberry Pi. We programmed primarily in Python and implemented functions to check when the Brita is empty based on the input data; if it is, we then trigger an alarm which prompts the user to refill. Lastly, if the Brita remains unfilled,  we use Twilio to send a message to the entire roommate group chat that someone needs to get on their Brita game!
